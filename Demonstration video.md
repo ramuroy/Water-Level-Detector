@@ -2,7 +2,7 @@
 
 Watch the **Water Level Detector Project** in action! 💧🚨  
 
-🔗 **[Click here to watch the demonstration on LinkedIn](YOUR_LINK_HERE)**  
+🔗 **[Click here to watch the demonstration on LinkedIn](https://www.linkedin.com/posts/ramu-roy-b780382b7_arduino-waterleveldetector-iot-activity-7286623645014106112-ChIN?rcm=ACoAAEwAX4wBY70YZ3l58lvkiXtyCZcnWWrfJAA)**  
 
 This video showcases how the water level detection system works, including:  
 ✅ Real-time water level monitoring using a water level sensor module  
