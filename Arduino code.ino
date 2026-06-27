@@ -13,7 +13,8 @@ bool ledOn = false;
 bool buzzerOn = false;
 
 void setup() {
-    pinMode(LED_PIN, OUTPUT);      // analogRead() needs no pinMode on A0
+    // A0 (the analog water sensor) needs no pinMode for analogRead().
+    pinMode(LED_PIN, OUTPUT);
     pinMode(BUZZER_PIN, OUTPUT);
     Serial.begin(9600);
 }
