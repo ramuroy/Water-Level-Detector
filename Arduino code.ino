@@ -1,30 +1,37 @@
-#define WATER_SENSOR A0  // Water level sensor connected to Analog pin A0
-#define LED_PIN 7        // LED connected to digital pin 7
-#define BUZZER_PIN 8     // Buzzer connected to digital pin 8
+#define WATER_SENSOR A0  // Water level sensor on analog pin A0
+#define LED_PIN 7        // LED on digital pin 7
+#define BUZZER_PIN 8     // Buzzer on digital pin 8
+
+// Hysteresis bands stop the outputs flickering when the level sits near a
+// threshold: turn ON at the higher value, OFF only after it drops past the lower.
+#define LED_ON 520
+#define LED_OFF 480
+#define BUZZER_ON 820
+#define BUZZER_OFF 780
+
+bool ledOn = false;
+bool buzzerOn = false;
 
 void setup() {
-    pinMode(WATER_SENSOR, INPUT);  // Set water sensor as input
-    pinMode(LED_PIN, OUTPUT);      // Set LED as output
-    pinMode(BUZZER_PIN, OUTPUT);   // Set buzzer as output
-    Serial.begin(9600);            // Initialize serial communication
+    pinMode(LED_PIN, OUTPUT);      // analogRead() needs no pinMode on A0
+    pinMode(BUZZER_PIN, OUTPUT);
+    Serial.begin(9600);
 }
 
 void loop() {
-    int waterLevel = analogRead(WATER_SENSOR);  // Read sensor value
+    int waterLevel = analogRead(WATER_SENSOR);
     Serial.print("Water Level Sensor Value: ");
-    Serial.println(waterLevel);  // Print sensor value for debugging
+    Serial.println(waterLevel);
 
-    if (waterLevel > 500) {  // Adjust threshold based on sensor calibration
-        digitalWrite(LED_PIN, HIGH);   // Turn on LED when water reaches the level
-    } else {
-        digitalWrite(LED_PIN, LOW);    // Turn off LED if water is below the level
-    }
+    // LED: water has reached the set level
+    if (!ledOn && waterLevel > LED_ON) ledOn = true;
+    else if (ledOn && waterLevel < LED_OFF) ledOn = false;
+    digitalWrite(LED_PIN, ledOn ? HIGH : LOW);
 
-    if (waterLevel > 800) {  // Overflow warning threshold
-        digitalWrite(BUZZER_PIN, HIGH); // Activate buzzer
-    } else {
-        digitalWrite(BUZZER_PIN, LOW);  // Deactivate buzzer
-    }
+    // Buzzer: overflow warning
+    if (!buzzerOn && waterLevel > BUZZER_ON) buzzerOn = true;
+    else if (buzzerOn && waterLevel < BUZZER_OFF) buzzerOn = false;
+    digitalWrite(BUZZER_PIN, buzzerOn ? HIGH : LOW);
 
-    delay(500);  // Small delay to avoid frequent toggling
+    delay(200);
 }
